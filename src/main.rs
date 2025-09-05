@@ -5,15 +5,19 @@ use std::env;
 
 fn main() {
     
-    println!("{}", env::current_dir().unwrap().display());
-
     let mut f = File::open("test.bas").unwrap();
     let mut content = String::new();
     f.read_to_string(&mut content);
 
-    let content_vec: Vec<&str> = content.split("\n").collect();
-    for i in content_vec {
+    let content_vec: Vec<String> = content
+        .split("\n")
+        .map(|f| f.to_string())
+        .collect();
+
+    for i in &content_vec {
         println!("- {}",i);
     }
-    lexer::test();
+
+    let res_vec = lexer::Lexer::tokenize(content_vec).unwrap();
+    println!("{:?}", res_vec);
 }
